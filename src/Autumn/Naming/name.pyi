@@ -17,9 +17,10 @@ class Name(AbstractBase):
 
     def __init__(self,
                  name: str,
-                 id_: Identifier | str,
-                 classes: list[Class | str],
-                 /, *,
+                 /,
+                 id_: Identifier | str = "",
+                 classes: list[Class | str] | None = None,
+                 *,
                  attributes: dict[str, str] | None = None,
                  ) -> None: ...
 
@@ -30,3 +31,6 @@ class Name(AbstractBase):
 
     @staticmethod
     def from_tag(tag: AbstractTag) -> Name: ...
+
+    """@staticmethod
+    def from_string(string: str) -> Name: ..."""

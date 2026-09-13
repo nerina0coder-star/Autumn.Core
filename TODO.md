@@ -32,5 +32,13 @@ Types:
   ```
 * Type: Feature
 
+## CSS Selectors need update
+* Description:
+  ```text
+  Current CSS selectors cover bare minimum of what CSS is capable of.
+  Please add new CSS selectors, such as ~ * >, etc... and in the Attribute Selector,
+  |=, i, ~=, and so on.
+  ```
+
 # Done
-...
+Not any yet
