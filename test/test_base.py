@@ -129,17 +129,18 @@ class Test(unittest.TestCase):
                     called_something.append("smt")
                     raise Exception("smt")
 
-        self2 = self
+        test_case = self
+        base = self.base
 
         class Ext:
             def __init__(self) -> None:
-                self2.base.extensions = self
+                base.extensions = self
 
             def _at_exception(self, **kwargs: Any) -> None:
-                self2.assertIsNotNone(kwargs.get("instance"))
-                self2.assertIsNotNone(kwargs.get("kwargs"))
-                self2.assertIsNotNone(kwargs.get("args"))
-                self2.assertIsNotNone(kwargs.get("exception"))
+                test_case.assertIsNotNone(kwargs.get("instance"))
+                test_case.assertIsNotNone(kwargs.get("kwargs"))
+                test_case.assertIsNotNone(kwargs.get("args"))
+                test_case.assertIsNotNone(kwargs.get("exception"))
                 called_hook.append("smt")
 
         ext = Ext()

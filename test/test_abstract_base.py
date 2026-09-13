@@ -246,7 +246,7 @@ class Test(unittest.TestCase):
             def __init_hook__(self, *, a):
                 assert a == "test"
 
-        self2 = self
+        test_case = self
         called = []
 
         class B(A):
@@ -255,9 +255,9 @@ class Test(unittest.TestCase):
 
             def __params_to_parent__(self, parent, *args, **kwargs):
                 called.append(True)
-                self2.assertIs(parent, A)
-                self2.assertEqual(kwargs, {})
-                self2.assertEqual(args, (self.b,))
+                test_case.assertIs(parent, A)
+                test_case.assertEqual(kwargs, {})
+                test_case.assertEqual(args, (self.b,))
 
                 return tuple(), {"a": self.b}
 
