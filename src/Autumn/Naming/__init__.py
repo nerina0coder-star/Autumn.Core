@@ -2,6 +2,7 @@ from .class_ import Class
 from .identifier import Identifier
 from .attribute_selector import AttributeSelector
 from .name import Name
+from .generator import Generator
 
 # --- Special Function ---
 
@@ -55,3 +56,4 @@ class Naming:
     Identifier = Identifier
     Class = Class
     AttributeSelector = AttributeSelector
+    Generator = Generator

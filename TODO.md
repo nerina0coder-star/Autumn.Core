@@ -1,7 +1,8 @@
 # Info
 
 Types:
-* Adding Tests - fields: Minimum tests - The minimum number of tests to add.
+* Adding Tests - Used for TODOs that include adding a test - fields: Minimum tests - The minimum number of tests to add.
+* Feature - Used for TODOs that add a new feature, whether to fix another class's problems or a complete new feature - fields: None
 
 # Undone
 
@@ -22,6 +23,14 @@ Types:
   In my absence, I hope the framework grows well, some people see it, and so.
   ```
 * Type: ?
+
+## Global usable generator
+* Description:
+  ```text
+  The current generator, while fast, consumes a lot of memory for storing pointers and state.
+  Create a new generator that fixes that problem.
+  ```
+* Type: Feature
 
 # Done
 ...
