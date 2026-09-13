@@ -3,6 +3,7 @@
 Types:
 * Adding Tests - Used for TODOs that include adding a test - fields: Minimum tests - The minimum number of tests to add.
 * Feature - Used for TODOs that add a new feature, whether to fix another class's problems or a complete new feature - fields: None
+* Breaking Feature - Used for TODOs that add a breaking feature that replaces another feature or somehow breaks something - fields: None
 
 # Undone
 
@@ -32,6 +33,20 @@ Types:
   ```
 * Type: Feature
 
+## CSS Selectors
+* Description:
+  ```text
+  Selectors play a huge role in CSS, and Autumn(Core) can't implement everything.
+  Add a new class, e.g., Selector, that users can define and use, and so the framework
+  won't limit them.
+  ```
+* Type: Breaking Feature
+
+# Done
+Not any yet
+
+# Cancelled
+
 ## CSS Selectors need update
 * Description:
   ```text
@@ -39,6 +54,4 @@ Types:
   Please add new CSS selectors, such as ~ * >, etc... and in the Attribute Selector,
   |=, i, ~=, and so on.
   ```
-
-# Done
-Not any yet
+* Type: Feature
