@@ -39,6 +39,8 @@ class Name(AbstractBase):
     def build(self, cache_if_possible = True, **kwargs):
 
         out = [self.name]
+        if self.name.count(" ") + self.name.count("\t") + self.name.count("\n") != 0 or any(i in self.name for i in "#.[]"):
+            raise ValueError(f"Invalid CSS Tag Name: {self.name}")
 
         self.before_build(**kwargs)
 
