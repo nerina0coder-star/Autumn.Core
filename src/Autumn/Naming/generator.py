@@ -16,7 +16,7 @@ class Generator:
 
     Also note that overusing Class/ID generation for long-running apps,
     or using them with in specific context(Without any extra caution) might
-    result in high memory usage. Such as, for 1 million IDs, near 700MB space is used.
+    result in high memory usage. Such as, for 1 million IDs, near 70MB space is used.
 
     Please note that using this for any security purposes is worse practice, instead,
     use secrets.token_urlsafe or secrets.token_hex,
