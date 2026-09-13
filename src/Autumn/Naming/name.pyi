@@ -31,3 +31,6 @@ class Name(AbstractBase):
 
     @staticmethod
     def from_tag(tag: AbstractTag) -> Name: ...
+
+    """@staticmethod
+    def from_string(string: str) -> Name: ..."""
