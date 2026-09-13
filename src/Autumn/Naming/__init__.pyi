@@ -5,6 +5,7 @@ from .class_ import Class as Class
 from .identifier import Identifier as Identifier
 from .attribute_selector import AttributeSelector as AttributeSelector
 from .name import Name as Name
+from .generator import Generator as Generator
 
 def MakeSelector(
         state: Name | list[Name] | None = None,
@@ -28,3 +29,4 @@ class Naming:
     Identifier: ClassVar[type[Identifier]]
     Class: ClassVar[type[Class]]
     AttributeSelector: ClassVar[type[AttributeSelector]]
+    Generator: ClassVar[type[Generator]]
