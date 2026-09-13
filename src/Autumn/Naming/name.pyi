@@ -17,9 +17,10 @@ class Name(AbstractBase):
 
     def __init__(self,
                  name: str,
-                 id_: Identifier | str,
-                 classes: list[Class | str],
-                 /, *,
+                 /,
+                 id_: Identifier | str = "",
+                 classes: list[Class | str] | None = None,
+                 *,
                  attributes: dict[str, str] | None = None,
                  ) -> None: ...
 

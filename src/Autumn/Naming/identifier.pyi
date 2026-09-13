@@ -2,7 +2,7 @@ import dataclasses
 import threading
 
 
-@dataclasses.dataclass
+@dataclasses.dataclass(frozen=True)
 class Identifier:
 
     name: str
