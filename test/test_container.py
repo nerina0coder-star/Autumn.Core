@@ -42,20 +42,20 @@ class Test(unittest.TestCase):
 
     def test_sheet(self) -> None:
 
-        self2 = self
+        name = self.name
 
         class Style(self.style.Style):  # type: ignore[misc,name-defined]
             def __init__(self) -> None:
                 self.styles = ["margin: 1px;", "padding: 1px;"]
-                self.name = ["div", self2.name.Name("smt", "identifier", ["any"])]
-                self.classes = ["margin-and-padding", self2.name.Class("cls")]
-                self.identifier = ["id1", self2.name.Identifier("id2")]
+                self.name = ["div", name.Name("smt", "identifier", ["any"])]
+                self.classes = ["margin-and-padding", name.Class("cls")]
+                self.identifier = ["id1", name.Identifier("id2")]
 
                 super().__init__()
 
-        sheet = self.style.Sheet(Style())
+        sheet = self.style.Sheet(Style(), Style())
 
         self.assertMultiLineEqual(sheet.build(),
-                                  "div,smt#identifier.any"
+                                  ("div,smt#identifier.any"
                                   ",.margin-and-padding,.cls"
-                                  ",#id1,#id2{margin: 1px;padding: 1px;}")
+                                  ",#id1,#id2{margin: 1px;padding: 1px;}") * 2)

@@ -1,5 +1,6 @@
 import threading
 
+from Autumn.Naming import Class, Identifier
 from Autumn.Style.Styles import StyleHolder
 from Autumn.abstract_base import AbstractBase
 
@@ -60,21 +61,37 @@ class AbstractStyle(AbstractBase):
             return result
 
         out: list[str] = []
+        name_ran: bool = False
+        class_ran: bool = False
 
         if self.name:
             for name in self.name[0:-1]:
                 out.extend([name.build(**kwargs) if not isinstance(name, str) else name, ","])
             out.append(self.name[-1].build(**kwargs))
+            name_ran = True
         if self.classes:
-            out.append(",")
+            if name_ran:
+                out.append(",")
             for cls in self.classes[0:-1]:
+                if isinstance(cls, str):
+                    cls = Class(cls)
                 out.extend([f".{cls}", ","])
-            out.append(f".{self.classes[-1]}")
+            cls = self.classes[-1]
+            if isinstance(cls, str):
+                cls = Class(cls)
+            out.append(f".{cls}")
+            class_ran = True
         if self.identifier:
-            out.append(",")
+            if name_ran or class_ran:
+                out.append(",")
             for identifier in self.identifier[0:-1]:
+                if isinstance(identifier, str):
+                    identifier = Identifier(identifier)
                 out.extend([f"#{str(identifier)}", ","])
-            out.append(f"#{self.identifier[-1]}")
+            identifier = self.identifier[-1]
+            if isinstance(identifier, str):
+                identifier = Identifier(identifier)
+            out.append(f"#{identifier}")
 
         out.append("{")
 
