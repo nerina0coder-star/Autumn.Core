@@ -47,7 +47,7 @@ class Generator:
         self._identifier_incrementing_map: list[bool] = [True]
         self._class_incrementing_map: list[bool] = [True]
 
-        self._first_letter: Final[str] = alphabet + uppercase_alphabet
+        self._first_letter: Final[str] = alphabet + uppercase_alphabet + "_"
         self._charset: Final[str] = alphabet + uppercase_alphabet + numbers + "-_"
 
     def generate_identifier(self, *, raw: bool = True) -> str | Identifier:

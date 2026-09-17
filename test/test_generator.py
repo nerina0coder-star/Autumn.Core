@@ -15,7 +15,7 @@ class Test(TestCase):
 
         made = set()
         lock = Lock()
-        pattern = re.compile(r"[a-zA-Z][a-zA-Z0-9\-_]*")
+        pattern = re.compile(r"[a-zA-Z_][a-zA-Z0-9\-_]*")
 
         def test():
 
@@ -35,7 +35,7 @@ class Test(TestCase):
 
         made = set()
         lock = Lock()
-        pattern = re.compile(r"[a-zA-Z][a-zA-Z0-9\-_]*")
+        pattern = re.compile(r"[a-zA-Z_][a-zA-Z0-9\-_]*")
 
         def test():
 
