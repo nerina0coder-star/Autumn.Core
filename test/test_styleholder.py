@@ -72,7 +72,7 @@ class Test(unittest.TestCase):
             def __init__(self):
                 self.name = "color"
                 self.value = "red"
-                self.dynamic = False
+                self.dynamic = False  # as said, the only class that needs explicit dynamic=False.
                 super().__init__()
 
             def before_build(self, **kwargs: Any) -> str | None:

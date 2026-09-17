@@ -38,3 +38,26 @@ class Test(unittest.TestCase):
         self.assertEqual(Style().build(), "div.cls#id,p,p#identifier.cls{}")
         self.assertEqual(Style2().build(), ".cls1,.cls2,.cls-3{}")
         self.assertEqual(Style3().build(), "#identifier,#identifier-2{}")
+
+    def test_style_works_with_styleholders(self):
+        class Style(self.style.Style):
+            def __init__(self, *holders):
+                self.styles = list(holders)
+                self.classes = ["test"]
+
+                super().__init__()
+
+        class Holder(self.style.holder):
+            def __init__(self, color: str):
+                self.name = "color"
+                self.value = color
+
+                super().__init__()
+
+        first = Style(Holder("red"))
+        second = Style(Holder("red"), Holder("green"))
+        third = Style(Holder("red"), Holder("green"), Holder("blue"))
+
+        self.assertEqual(first.build(), ".test{color:red;}")
+        self.assertEqual(second.build(), ".test{color:red;color:green;}")
+        self.assertEqual(third.build(), ".test{color:red;color:green;color:blue;}")
