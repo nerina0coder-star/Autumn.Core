@@ -41,6 +41,9 @@ class Generator:
         uppercase_alphabet = alphabet.upper()
         numbers = "0123456789"
 
+        self._identifier_next: set[str] = set()
+        self._class_next: set[str] = set()
+
         self._class_pointers: list[int] = [0]
         self._identifier_pointers: list[int] = [0]
 
@@ -59,7 +62,7 @@ class Generator:
         """
         with self._lock:
             out = self._prefix + self._generate(self._defined_identifiers, self._identifier_pointers,
-                                                self._identifier_incrementing_map) + self._suffix
+                                                self._identifier_incrementing_map, self._identifier_next) + self._suffix
         if raw:
             return out
         return Identifier(out)
@@ -73,7 +76,7 @@ class Generator:
         """
         with self._lock:
             out = self._prefix + self._generate(self._defined_classes, self._class_pointers,
-                                                self._class_incrementing_map) + self._suffix
+                                                self._class_incrementing_map, self._class_next) + self._suffix
         if raw:
             return out
         return Class(out)
@@ -93,7 +96,11 @@ class Generator:
             if suffix is not None:
                 self._suffix = suffix
 
-    def _generate(self, predefined: set[str], pointers: list[int], incr: list[bool], /) -> str:
+    def _generate(self, predefined: set[str], pointers: list[int], incr: list[bool], next_one: set[str], /) -> str:
+
+        if next_one and (one := next_one.pop()) not in predefined:
+            return one
+
         approved = False
 
         max_first_position = len(self._first_letter) - 1
@@ -115,6 +122,7 @@ class Generator:
             # Approving
             if made not in predefined:
                 returning = made
+                next_one.add("-" + made) # `-a` is valid, so is `-_`.
                 approved = True
                 # continue missing to prevent re-checking on next run.
 
@@ -141,8 +149,12 @@ class Generator:
 
             while not done_increasing:
 
-                if True in incr[last_index:]:
+                try:
                     index = incr.index(True, last_index)
+                except ValueError:
+                    index = -1
+
+                if index != -1:
                     pointer = pointers[index]
 
                     if index != 0 and pointer < max_position:
@@ -156,6 +168,9 @@ class Generator:
                     else:
                         last_index = index + 1
                         continue
+
+                len_of_pointers = len(pointers)
+
                 if incr[-1]:  # Checks whether the last position was active,
                     # which means this is the last possibility we can get.
                     trues = incr.count(True) + 1
@@ -165,11 +180,11 @@ class Generator:
                             trues -= 1
                         else:
                             incr[i] = False
-                    for pointer_index in range(len(pointers)):
+                    for pointer_index in range(len_of_pointers):
                         pointers[pointer_index] = 0
                 else:
                     incr.insert(0, incr.pop())
-                    for pointer_index in range(len(pointers)):
+                    for pointer_index in range(len_of_pointers):
                         pointers[pointer_index] = 0
 
                 done_increasing = True
