@@ -41,6 +41,9 @@ class Generator:
         uppercase_alphabet = alphabet.upper()
         numbers = "0123456789"
 
+        self._identifier_next: set[str] = set()
+        self._class_next: set[str] = set()
+
         self._class_pointers: list[int] = [0]
         self._identifier_pointers: list[int] = [0]
 
@@ -59,7 +62,7 @@ class Generator:
         """
         with self._lock:
             out = self._prefix + self._generate(self._defined_identifiers, self._identifier_pointers,
-                                                self._identifier_incrementing_map) + self._suffix
+                                                self._identifier_incrementing_map, self._identifier_next) + self._suffix
         if raw:
             return out
         return Identifier(out)
@@ -73,7 +76,7 @@ class Generator:
         """
         with self._lock:
             out = self._prefix + self._generate(self._defined_classes, self._class_pointers,
-                                                self._class_incrementing_map) + self._suffix
+                                                self._class_incrementing_map, self._class_next) + self._suffix
         if raw:
             return out
         return Class(out)
@@ -93,7 +96,11 @@ class Generator:
             if suffix is not None:
                 self._suffix = suffix
 
-    def _generate(self, predefined: set[str], pointers: list[int], incr: list[bool], /) -> str:
+    def _generate(self, predefined: set[str], pointers: list[int], incr: list[bool], next_one: set[str], /) -> str:
+
+        if next_one and (one := next_one.pop()) not in predefined:
+            return one
+
         approved = False
 
         max_first_position = len(self._first_letter) - 1
@@ -115,6 +122,7 @@ class Generator:
             # Approving
             if made not in predefined:
                 returning = made
+                next_one.add("-" + made)
                 approved = True
                 # continue missing to prevent re-checking on next run.
 
