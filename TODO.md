@@ -46,10 +46,10 @@ Types:
 * Description:
   ```text
   One of the most long-lived problems with CSS is the C, Cascade.
-  How Autumn will handle this is by using a worth mechasims that orders
+  How Autumn will handle this is by using a worth mechanisms that orders
   each style in a sheet, therefore taking the most important ones to the bottom(so it overrides
-  the top) and the less important to the bottom(so it's the first overriden).
-  An idea is that the styles can hold any integerable value, such as an Enum that defines __int__,
+  the top) and the less important to the top(so it's the first overriden).
+  An idea is that the styles can hold any integer-able value, such as an Enum that defines __int__,
   then the styles will be sorted via sorted(styles) where styles is the list of styles.
   ```
 * Type: Feature
