@@ -122,7 +122,7 @@ class Generator:
             # Approving
             if made not in predefined:
                 returning = made
-                next_one.add("-" + made)
+                next_one.add("-" + made) # `-a` is valid, so is `-_`.
                 approved = True
                 # continue missing to prevent re-checking on next run.
 
@@ -149,8 +149,12 @@ class Generator:
 
             while not done_increasing:
 
-                if True in incr[last_index:]:
+                try:
                     index = incr.index(True, last_index)
+                except ValueError:
+                    index = -1
+
+                if index != -1:
                     pointer = pointers[index]
 
                     if index != 0 and pointer < max_position:
@@ -164,6 +168,9 @@ class Generator:
                     else:
                         last_index = index + 1
                         continue
+
+                len_of_pointers = len(pointers)
+
                 if incr[-1]:  # Checks whether the last position was active,
                     # which means this is the last possibility we can get.
                     trues = incr.count(True) + 1
@@ -173,11 +180,11 @@ class Generator:
                             trues -= 1
                         else:
                             incr[i] = False
-                    for pointer_index in range(len(pointers)):
+                    for pointer_index in range(len_of_pointers):
                         pointers[pointer_index] = 0
                 else:
                     incr.insert(0, incr.pop())
-                    for pointer_index in range(len(pointers)):
+                    for pointer_index in range(len_of_pointers):
                         pointers[pointer_index] = 0
 
                 done_increasing = True
