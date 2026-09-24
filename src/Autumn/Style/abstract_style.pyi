@@ -15,10 +15,17 @@ class AbstractStyle(AbstractBase, abc.ABC):
     classes: list[Class | str]
     styles: list[StyleHolder | str]
     dynamic: bool
+    worth: int | Any
     _cache: list[str]
     _lock: threading.RLock
 
     def __init__(self) -> None: ...
 
     def build(self, cache_if_possible: bool = True, **kwargs: Any) -> str: ...
+    
+    def __eq__(self, other: AbstractStyle) -> bool: ... # type: ignore[override]
+
+    def __ne__(self, other: AbstractStyle) -> bool: ... # type: ignore[override]
+
+    def __lt__(self, other: AbstractStyle) -> bool: ...
 
