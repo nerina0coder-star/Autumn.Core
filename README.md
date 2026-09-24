@@ -27,7 +27,7 @@ The project is available in PyPI as autumn-core, so installing it is as simple a
 ```shell
 cd /path/to/new/project
 python3 -m venv .venv
-.venv/bin/pip install autumn-core # or .venv/Scripts/pip for windows
+.venv/bin/pip install autumn-core # or .venv/Scripts/pip.exe for windows
 ```
 
 Then you can start using Autumn in any way you would like.
