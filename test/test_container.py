@@ -59,3 +59,20 @@ class Test(unittest.TestCase):
                                   ("div,smt#identifier.any"
                                   ",.margin-and-padding,.cls"
                                   ",#id1,#id2{margin: 1px;padding: 1px;}") * 2)
+
+    def test_sheet_sorting(self)-> None:
+
+        class Style(self.style.Style):
+            def __init__(self, worth: int) -> None:
+                self.worth = worth
+                self.styles = [f"worth: {worth};"]
+                self.classes = ["testing"]
+                super().__init__()
+
+        sheet = self.style.Sheet(Style(1), Style(2), Style(4), Style(3), Style(6), Style(6))
+
+        sheet.sort()
+
+        self.assertMultiLineEqual(sheet.build(),
+                                  ".testing{worth: 1;}.testing{worth: 2;}.testing{worth: 3;}.testing{worth: 4;}.testing{worth: 6;}.testing{worth: 6;}")
+

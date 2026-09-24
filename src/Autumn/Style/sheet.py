@@ -29,3 +29,7 @@ class Sheet(AbstractBase):
             self._caches.append(out)
 
         return out
+
+    def sort(self):
+        self.styles = sorted(self.styles)
+

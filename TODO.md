@@ -42,6 +42,8 @@ Types:
   ```
 * Type: Breaking Feature
 
+# Done
+
 ## CSS Sorting and Ordering mechanisms
 * Description:
   ```text
@@ -54,15 +56,6 @@ Types:
   ```
 * Type: Feature
 
-## Github Problem
-* Description:
-  ```text
-  I have some problems on my side(nerina0coder), so I'll be absent for so long.
-  I'll try to view PRs and issues, but won't update.
-  ```
-
-# Done
-Not any yet
 
 # Cancelled
 

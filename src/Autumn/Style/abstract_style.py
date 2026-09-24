@@ -3,7 +3,7 @@ import threading
 from Autumn.Naming import Class, Identifier
 from Autumn.Style.Styles import StyleHolder
 from Autumn.abstract_base import AbstractBase
-
+from Autumn.decorators import no_lock
 
 class AbstractStyle(AbstractBase):
     """
@@ -34,6 +34,9 @@ class AbstractStyle(AbstractBase):
             self.dynamic = False
         if not (hasattr(self, "_cache") and isinstance(self._cache, list)):
             self._cache = []
+
+        if not hasattr(self, "worth"):
+            self.worth = 0
 
         if not isinstance(self.name, list):
             self.name = [self.name] # type: Ignore
@@ -108,3 +111,14 @@ class AbstractStyle(AbstractBase):
             self._cache.append(out)
 
         return "".join(out)
+
+    def __eq__(self, other):
+        return int(self.worth) == int(other.worth)
+
+    @no_lock
+    def __ne__(self, other):
+        return not self == other
+
+    def __lt__(self, other):
+        return int(self.worth) < int(other.worth)
+
