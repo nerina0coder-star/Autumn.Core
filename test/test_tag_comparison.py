@@ -23,7 +23,7 @@ class Test(unittest.TestCase):
         self.prefix = "comparison_"
 
     def test_equality(self):
-        
+
 
         page = self.page.new("my-page")
 
@@ -39,8 +39,8 @@ class Test(unittest.TestCase):
 
         write(page.build(), self.prefix + "equality.html")
 
-    def test_greaterThan(self):
-        
+    def test_greater_than(self):
+
 
         tag = self.tag.Tag
 
@@ -61,8 +61,8 @@ class Test(unittest.TestCase):
         write(page.build(), self.prefix + "greater.html")
 
 
-    def test_lessThan(self):
-        
+    def test_less_than(self):
+
 
         tag = self.tag.Tag
 
