@@ -12,7 +12,7 @@ class Head(AbstractTag):
         """
         self.name = "head"
         self.closable = True
-        self.tags = [Meta(name="viewport", content=["width=device-width", "initial-scale=1.0"]),
-                     Meta(charset="UTF-8")]
+        self.tags = [
+            Meta(charset="UTF-8"), Meta(name="viewport", content=["width=device-width", "initial-scale=1.0"])]
         self.tags.extend(dict.fromkeys(children))
         AbstractTag.__init__(self)

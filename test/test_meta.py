@@ -13,7 +13,7 @@ class Test(unittest.TestCase):
         self.tag = base.tag
         self.page = base.page
 
-        self.auto = '''<meta name="viewport" content="width=device-width,initial-scale=1.0"><meta charset="UTF-8">'''
+        self.auto = '''<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">'''
 
     def test_meta_custom(self):
 

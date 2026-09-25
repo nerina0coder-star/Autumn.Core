@@ -17,25 +17,37 @@ class Test(unittest.TestCase):
         page = (self.page.require(self.tag.meta.Cdn("style", "https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.8/js/bootstrap.min.js"))
                 .new("my-page"))
 
-        page.tag(self.tag.meta.Head())
+        # page.tag(self.tag.meta.Head())
 
         self.assertMultiLineEqual(page.build(),
                                   "<!DOCTYPE html>"
                                   '<html lang="en" dir="auto">'
                                   "<head>"
-                                  '<meta name="viewport" content="width=device-width,initial-scale=1.0">'
                                   '<meta charset="UTF-8">'
+                                  '<meta name="viewport" content="width=device-width,initial-scale=1.0">'
                                   "<title>my-page</title>"
+                                  '<link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.8/js/bootstrap.min.js" rel="stylesheet">'
                                   '</head>'
                                   '</html>')
 
         class CustomPage(self.page.Page):  # type: ignore[misc,name-defined]
             ...
 
+        page2 = CustomPage("my-page")
+
+        page2.require(
+            self.tag.meta.Cdn(
+                "style",
+                "https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.8/js/bootstrap.min.js"
+            )
+        )
+
+        self.maxDiff = None
+
         self.page.register(CustomPage("page"))
 
         self.assertMultiLineEqual(page.build(),
-                                  CustomPage("my-page").build())
+                                  page2.build())
 
         self.assertMultiLineEqual(page.build(),
                                   self.page.build("my-page"))

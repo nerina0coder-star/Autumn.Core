@@ -41,7 +41,7 @@ class PageManager(AbstractBase):
         :return: The newly created page.
         """
         page = Page(name)
-        page.requirements.extend(self._cdn)
+        page.require(self._cdn)
         if not name in self._pages:
             self._pages[name] = page
             return page
