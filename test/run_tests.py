@@ -11,8 +11,9 @@ def write(out: str, dest: str):
     with open(path, "w") as file:
         file.write(out if not out.startswith("<!DOCTYPE") else out)
 
+
 if __name__ == "__main__":
-    new() # To load
+    new()  # To load
 
     suite = unittest.loader.defaultTestLoader.discover("./test")
     runner = unittest.TextTestRunner(verbosity=2)

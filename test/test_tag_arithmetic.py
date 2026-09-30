@@ -50,7 +50,6 @@ class Test(unittest.TestCase):
 
     def test_multiplication(self):
 
-
         page = self.page.new("my-page")
 
         p1 = self.tag.p("This is a paragraph") * 2
@@ -59,12 +58,13 @@ class Test(unittest.TestCase):
 
         body = self.tag.body(*[*p1, *brs, *p2])
 
-        self.assertMultiLineEqual(body.build(),
-             "<body>" +
-                ("<p>This is a paragraph</p>" * 2) +
-                ("<br>" * 2) +
-                ("<p>This is another paragraph</p>" * 2) +
-             "</body>"
+        self.assertMultiLineEqual(
+            body.build(),
+            "<body>"
+            + ("<p>This is a paragraph</p>" * 2)
+            + ("<br>" * 2)
+            + ("<p>This is another paragraph</p>" * 2)
+            + "</body>",
         )
 
         page.tag(body)
@@ -73,19 +73,23 @@ class Test(unittest.TestCase):
 
     def test_addition(self):
 
-
         page = self.page.new("my-page")
 
-        content = self.tag.p("This is a paragraph") + self.tag.br() + self.tag.p("And another paragraph.")
+        content = (
+            self.tag.p("This is a paragraph")
+            + self.tag.br()
+            + self.tag.p("And another paragraph.")
+        )
 
         body = self.tag.body(*content)
 
-        self.assertMultiLineEqual(body.build(),
-             "<body>"
-                 "<p>This is a paragraph</p>"
-                 "<br>" 
-                 "<p>And another paragraph.</p>"
-             "</body>"
+        self.assertMultiLineEqual(
+            body.build(),
+            "<body>"
+            "<p>This is a paragraph</p>"
+            "<br>"
+            "<p>And another paragraph.</p>"
+            "</body>",
         )
 
         page.tag(body)
@@ -93,7 +97,7 @@ class Test(unittest.TestCase):
         write(page.build(), self.prefix + "addition.html")
 
     def test_subtraction(self):
-        
+
         page = self.page.new("my-page")
 
         content = self.tag.div(self.tag.p("Hello!"), self.tag.p("World!"))

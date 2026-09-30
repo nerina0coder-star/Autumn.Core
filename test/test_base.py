@@ -4,14 +4,14 @@ from typing import Any
 
 from Autumn import new, Base, current_base  # type: ignore[import-not-found]
 
+
 class Test(unittest.TestCase):
     def setUp(self) -> None:
         self.base = new()
 
     def test_wrapping(self) -> None:
         @self.base.ctrl
-        class A:
-            ...
+        class A: ...
 
         a = A()
 
@@ -32,12 +32,10 @@ class Test(unittest.TestCase):
         other = new()
 
         @self.base.ctrl
-        class A:
-            ...
+        class A: ...
 
         @other.ctrl
-        class B:
-            ...
+        class B: ...
 
         A()
         B()
@@ -77,6 +75,7 @@ class Test(unittest.TestCase):
         called = []
 
         self_ = self
+
         class Extension:
             def __init__(self) -> None:
                 self_.base.extensions = self
@@ -102,6 +101,7 @@ class Test(unittest.TestCase):
     def test_extension_wrapped(self) -> None:
 
         self_ = self
+
         class Extension:
             def __init__(self) -> None:
                 self_.base.extensions = self
@@ -164,6 +164,7 @@ class Test(unittest.TestCase):
         base2 = new()
 
         self_ = self
+
         class Extension:
 
             def __init__(self) -> None:
@@ -207,6 +208,5 @@ class Test(unittest.TestCase):
 
         with self.assertRaises(RuntimeError, msg="smt smt"):
             Wrapped().smt()
-
 
         self.assertFalse(flags["wrapped"])

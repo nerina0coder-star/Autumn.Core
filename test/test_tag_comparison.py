@@ -24,7 +24,6 @@ class Test(unittest.TestCase):
 
     def test_equality(self):
 
-
         page = self.page.new("my-page")
 
         p1 = self.tag.p("Hello!")
@@ -40,7 +39,6 @@ class Test(unittest.TestCase):
         write(page.build(), self.prefix + "equality.html")
 
     def test_greater_than(self):
-
 
         tag = self.tag.Tag
 
@@ -60,9 +58,7 @@ class Test(unittest.TestCase):
 
         write(page.build(), self.prefix + "greater.html")
 
-
     def test_less_than(self):
-
 
         tag = self.tag.Tag
 

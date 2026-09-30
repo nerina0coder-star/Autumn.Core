@@ -10,7 +10,7 @@ class Test(unittest.TestCase):
         self.tag = base.tag
 
         class Div(self.tag.Tag):
-            def __init__(self, *content, classes = None, identifier = None):
+            def __init__(self, *content, classes=None, identifier=None):
 
                 self.name = "div"
                 self.closable = True
@@ -35,5 +35,12 @@ class Test(unittest.TestCase):
 
         "" >> div1 >> div2 >> div3 >> div4 >> div5 >> div6 >> div7 >> div7duplicate
 
-        self.assertEqual(div7duplicate.identifiers(), list(reversed(["one", "two", "three", "four", "five", "six", "seven", "seven"])))
+        self.assertEqual(
+            div7duplicate.identifiers(),
+            list(
+                reversed(
+                    ["one", "two", "three", "four", "five", "six", "seven", "seven"]
+                )
+            ),
+        )
         self.assertEqual(div7duplicate.duplicate_identifiers(), ["seven"])

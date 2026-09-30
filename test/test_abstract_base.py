@@ -3,8 +3,13 @@ import unittest
 from typing import Any
 
 from Autumn import AbstractBase  # type: ignore[import-not-found]
-from Autumn.decorators import no_lock, allow_lock, disable_autoinit, only_self, \
-    use_as_hook  # type: ignore[import-not-found]
+from Autumn.decorators import (
+    no_lock,
+    allow_lock,
+    disable_autoinit,
+    only_self,
+    use_as_hook,
+)  # type: ignore[import-not-found]
 
 
 class Test(unittest.TestCase):
@@ -15,7 +20,8 @@ class Test(unittest.TestCase):
 
         class Class(AbstractBase):
 
-            def build(self, **kwargs: Any) -> str: return ""
+            def build(self, **kwargs: Any) -> str:
+                return ""
 
             @classmethod
             def meth(cls: Any) -> None:
@@ -48,11 +54,11 @@ class Test(unittest.TestCase):
 
     def test_method_ignored_when_decorated_with_no_lock(self) -> None:
         locked = []
+
         class Class(AbstractBase):
 
             def __init__(self) -> None:
                 self._lock = threading.Lock()
-
 
             def build(self, **kwargs: Any) -> str:
                 return ""
@@ -70,6 +76,7 @@ class Test(unittest.TestCase):
     def test_method_locked_when_decorator_allow_lock_nullifies_no_lock(self) -> None:
 
         locked = []
+
         class Class(AbstractBase):
 
             def __init__(self) -> None:
@@ -91,11 +98,7 @@ class Test(unittest.TestCase):
 
     def test_base_autoinits_children_when_class_has_children_autoinit(self):
 
-        flags = {
-            "base_called": [],
-            "called_child": [],
-            "called_grandchildren": []
-        }
+        flags = {"base_called": [], "called_child": [], "called_grandchildren": []}
 
         class A(AbstractBase):
             __children_autoinit__ = True
@@ -127,10 +130,7 @@ class Test(unittest.TestCase):
 
     def test_base_autoinit_ignores_class_when_has_autocall_init(self) -> None:
 
-        flags = {
-            "A-Called": False,
-            "B-Called": False
-        }
+        flags = {"A-Called": False, "B-Called": False}
 
         class A(AbstractBase):
 
@@ -141,7 +141,6 @@ class Test(unittest.TestCase):
 
             def build(self, **kwargs: Any) -> str:
                 return ""
-
 
         class B(A):
 
@@ -156,12 +155,7 @@ class Test(unittest.TestCase):
 
     def test_autoinit_works_with_multiple_children_autoinit_exists(self):
 
-        flags = {
-            "A-Called": [],
-            "B-Called": [],
-            "C-Called": [],
-            "D-Called": []
-        }
+        flags = {"A-Called": [], "B-Called": [], "C-Called": [], "D-Called": []}
 
         @use_as_hook()
         class A(AbstractBase):
@@ -313,7 +307,8 @@ class Test(unittest.TestCase):
 
             __children_autoinit__ = True
 
-            def build(self, **kwargs: Any) -> str: return ""
+            def build(self, **kwargs: Any) -> str:
+                return ""
 
             def __init_hook__(self) -> None:
                 called.append(True)
@@ -334,9 +329,10 @@ class Test(unittest.TestCase):
         class A(AbstractBase):
             __no_new__ = True
 
-            def build(self, **kwargs: Any) -> str: return ""
+            def build(self, **kwargs: Any) -> str:
+                return ""
 
-        with self.assertRaises(RuntimeError,
-                               msg="Cannot create class A, class declared "
-                               "No New."):
+        with self.assertRaises(
+            RuntimeError, msg="Cannot create class A, class declared " "No New."
+        ):
             A()

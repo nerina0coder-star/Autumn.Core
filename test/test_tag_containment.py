@@ -35,13 +35,10 @@ class Test(unittest.TestCase):
         self.prefix = "containment_"
 
     def test_lshift(self):
-        
 
         page = self.page.new("my-page")
 
-        body = self.tag.body() << \
-               self.tag.span("Hello ") << \
-               self.tag.span("World!")
+        body = self.tag.body() << self.tag.span("Hello ") << self.tag.span("World!")
         """
         The operation above is same the as:
         
@@ -55,11 +52,7 @@ class Test(unittest.TestCase):
         """
 
         self.assertMultiLineEqual(
-           body.build(),
-            "<body>"
-            "<span>Hello </span>"
-            "<span>World!</span>"
-            "</body>"
+            body.build(), "<body>" "<span>Hello </span>" "<span>World!</span>" "</body>"
         )
 
         page.tag(body)
@@ -70,14 +63,11 @@ class Test(unittest.TestCase):
 
         page = self.page.new("my-page")
 
-        body = self.tag.span("World!") >> \
-               (self.tag.span("Hello ") >> self.tag.body())
+        body = self.tag.span("World!") >> (self.tag.span("Hello ") >> self.tag.body())
 
-        self.assertMultiLineEqual(body.build(),
-                         "<body>"
-                         "<span>Hello </span>"
-                         "<span>World!</span>"
-                         "</body>")
+        self.assertMultiLineEqual(
+            body.build(), "<body>" "<span>Hello </span>" "<span>World!</span>" "</body>"
+        )
 
         page.tag(body)
 
