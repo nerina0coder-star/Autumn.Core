@@ -4,11 +4,11 @@ from markupsafe import escape, Markup
 
 from Autumn.Tag.abstract_tag import AbstractTag
 
-
 class Comment(AbstractTag):
     """
     Represents an HTML comment, also seen as <!-- Content -->
     """
+
     def __init__(self, message: str, /):
         self.message = message
         self.name = "comment"

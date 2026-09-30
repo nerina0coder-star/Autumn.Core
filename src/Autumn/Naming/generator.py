@@ -5,7 +5,6 @@ from typing import Final, Iterator
 from Autumn.Naming.class_ import Class
 from Autumn.Naming.identifier import Identifier
 
-
 class Generator:
     """
     Used for generating Identifiers and Classes. It's recommended to use the context
@@ -61,8 +60,16 @@ class Generator:
         :return: A string or Identifier object.
         """
         with self._lock:
-            out = self._prefix + self._generate(self._defined_identifiers, self._identifier_pointers,
-                                                self._identifier_incrementing_map, self._identifier_next) + self._suffix
+            out = (
+                self._prefix
+                + self._generate(
+                    self._defined_identifiers,
+                    self._identifier_pointers,
+                    self._identifier_incrementing_map,
+                    self._identifier_next,
+                )
+                + self._suffix
+            )
         if raw:
             return out
         return Identifier(out)
@@ -75,8 +82,16 @@ class Generator:
         :return: A string or Class object.
         """
         with self._lock:
-            out = self._prefix + self._generate(self._defined_classes, self._class_pointers,
-                                                self._class_incrementing_map, self._class_next) + self._suffix
+            out = (
+                self._prefix
+                + self._generate(
+                    self._defined_classes,
+                    self._class_pointers,
+                    self._class_incrementing_map,
+                    self._class_next,
+                )
+                + self._suffix
+            )
         if raw:
             return out
         return Class(out)
@@ -96,7 +111,14 @@ class Generator:
             if suffix is not None:
                 self._suffix = suffix
 
-    def _generate(self, predefined: set[str], pointers: list[int], incr: list[bool], next_one: set[str], /) -> str:
+    def _generate(
+        self,
+        predefined: set[str],
+        pointers: list[int],
+        incr: list[bool],
+        next_one: set[str],
+        /,
+    ) -> str:
 
         if next_one and (one := next_one.pop()) not in predefined:
             return one
@@ -122,14 +144,17 @@ class Generator:
             # Approving
             if made not in predefined:
                 returning = made
-                next_one.add("-" + made) # `-a` is valid, so is `-_`.
+                next_one.add("-" + made)  # `-a` is valid, so is `-_`.
                 approved = True
                 # continue missing to prevent re-checking on next run.
 
             # Changing pointers
 
             ## If all pointers are maxed out, add a new pointer and reset all.
-            if all(pointer == max_position for pointer in pointers[1:]) and pointers[0] == max_first_position:
+            if (
+                all(pointer == max_position for pointer in pointers[1:])
+                and pointers[0] == max_first_position
+            ):
                 for i in range(len(pointers)):
                     pointers[i] = 0
                 pointers.append(0)

@@ -5,7 +5,6 @@ from .page import Page
 from ..Tag.Meta import Cdn
 from ..abstract_base import AbstractBase
 
-
 class PageManager(AbstractBase):
     """
     A page manager for managing multiple pages.
@@ -30,7 +29,9 @@ class PageManager(AbstractBase):
         :param cdn: The CDN(s) to include in all pages.
         :return: This instance for chaining operations.
         """
-        self._cdn.extend(c for c in (cdn if isinstance(cdn, list) else [cdn]) if c not in self._cdn)
+        self._cdn.extend(
+            c for c in (cdn if isinstance(cdn, list) else [cdn]) if c not in self._cdn
+        )
         return self
 
     def new(self, name: str, /) -> Page:
@@ -61,7 +62,7 @@ class PageManager(AbstractBase):
             return page
         raise ValueError("Page already exists.")
 
-    def build(self, name: str, **build_kwargs) -> str: # type: ignore
+    def build(self, name: str, **build_kwargs) -> str:  # type: ignore
         """
         Builds a managed page, and caches non-dynamic pages.
 

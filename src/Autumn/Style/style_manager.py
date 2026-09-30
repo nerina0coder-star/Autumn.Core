@@ -5,7 +5,6 @@ from .abstract_style import AbstractStyle
 from .sheet import Sheet
 from .Styles import StyleHolder
 
-
 class StyleManager(AbstractBase):
     """
     The class that helps manage the style objects.

@@ -7,7 +7,6 @@ from Autumn.Naming.identifier import Identifier
 from Autumn.Style.Styles.style_holder import StyleHolder
 from Autumn.abstract_base import AbstractBase
 
-
 class AbstractStyle(AbstractBase, abc.ABC):
 
     name: list[Name | str]
@@ -20,12 +19,7 @@ class AbstractStyle(AbstractBase, abc.ABC):
     _lock: threading.RLock
 
     def __init__(self) -> None: ...
-
     def build(self, cache_if_possible: bool = True, **kwargs: Any) -> str: ...
-    
-    def __eq__(self, other: AbstractStyle) -> bool: ... # type: ignore[override]
-
-    def __ne__(self, other: AbstractStyle) -> bool: ... # type: ignore[override]
-
+    def __eq__(self, other: AbstractStyle) -> bool: ...  # type: ignore[override]
+    def __ne__(self, other: AbstractStyle) -> bool: ...  # type: ignore[override]
     def __lt__(self, other: AbstractStyle) -> bool: ...
-

@@ -1,6 +1,5 @@
 import enum
 
-
 class LinkType(enum.Enum):
     """
     Different types of a link, for example, when including a CSS stylesheet, use STYLESHEET.

@@ -1,17 +1,12 @@
 from Autumn.Tag.abstract_tag import AbstractTag
 from Autumn.Tag.Enums.Meta import ScriptType
 
-
 class Script(AbstractTag):
     """
     Represents a Script tag.
     """
 
-    def __init__(
-            self,
-            src,
-            type_ = ScriptType.JS,
-            /):
+    def __init__(self, src, type_=ScriptType.JS, /):
         """
         Initializes a new instance.
 

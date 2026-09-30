@@ -1,6 +1,5 @@
 from Autumn.Tag.abstract_tag import AbstractTag
 
-
 class Title(AbstractTag):
     """
     Represents a title(The name of the document).

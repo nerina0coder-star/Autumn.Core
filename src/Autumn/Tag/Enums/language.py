@@ -1,10 +1,10 @@
 import enum
 
-
 class Language(enum.Enum):
     """
     A class holding many of the languages spoken worldwide.
     """
+
     ABKHAZIAN = "ab"
     AFAR = "aa"
     AFRIKAANS = "af"
@@ -51,7 +51,7 @@ class Language(enum.Enum):
     EWE = "ee"
     FAROESE = "fo"
     FIJIAN = "fj"
-    FINNISH = "fi" # Finish?
+    FINNISH = "fi"  # Finish?
     FRENCH = "fr"
     WESTERN_FRISIAN = "fy"
     FULAH = "ff"
@@ -178,7 +178,7 @@ class Language(enum.Enum):
 
     # Arabic
 
-    ARABIC_SAUDI ="ar-SA"
+    ARABIC_SAUDI = "ar-SA"
     ARABIC_EGYPT = "ar-EG"
     ARABIC_ALGERIA = "ar-DZ"
     ARABIC_MOROCCO = "ar-MA"
@@ -219,7 +219,6 @@ class Language(enum.Enum):
     RUSSIAN_BELARUS = "ru-BY"
     RUSSIAN_KAZAKHSTAN = "ru-KZ"
     RUSSIAN_UKRAINE = "ru-UA"
-
 
     # Persian
 
@@ -264,7 +263,7 @@ class Language(enum.Enum):
     # Mongolian
 
     MONGOLIAN_CYRILLIC = "mon-Cyrl"
-    MONGOLIAN_MONGOL ="mon-Mong"
+    MONGOLIAN_MONGOL = "mon-Mong"
 
     # Tamil
 

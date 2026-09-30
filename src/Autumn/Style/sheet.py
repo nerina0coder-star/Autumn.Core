@@ -3,7 +3,6 @@ import threading
 from Autumn.Style.abstract_style import AbstractStyle
 from Autumn.abstract_base import AbstractBase
 
-
 class Sheet(AbstractBase):
     """
     Sheet contains all styles made, so they will be made by just one build call.
@@ -32,4 +31,3 @@ class Sheet(AbstractBase):
 
     def sort(self):
         self.styles = sorted(self.styles)
-

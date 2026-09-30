@@ -10,13 +10,19 @@ from Autumn.Tag.Meta import Cdn
 from Autumn.Tag.Meta import Head
 from Autumn.abstract_base import AbstractBase
 
-
 class Page(AbstractBase):
     """
     A page class representing an HTML document.
     """
 
-    def __init__(self, name: str, /, *, direction: Literal["ltr", "rtl", "auto"] = "auto", language: Language | str = "en"):
+    def __init__(
+        self,
+        name: str,
+        /,
+        *,
+        direction: Literal["ltr", "rtl", "auto"] = "auto",
+        language: Language | str = "en",
+    ):
         """
         Initializes a new page object.
 
@@ -70,7 +76,7 @@ class Page(AbstractBase):
 
         self.before_build(**build_kwargs)
 
-        head: Head | None = next(filter(lambda tag: isinstance(tag, Head), self._tags), None) # type: ignore
+        head: Head | None = next(filter(lambda tag: isinstance(tag, Head), self._tags), None)  # type: ignore
 
         if head is None:
             head = Head()
@@ -79,10 +85,12 @@ class Page(AbstractBase):
         with head._lock:
             head.tags.extend([Title(self.name), *self._requirements])
 
-        out = ("<!DOCTYPE html>" +
-                f'<html lang="{escape(self.language)}" dir="{escape(self.direction)}">' +
-                "".join(tag.build(dynamic, **build_kwargs) for tag in self._tags) +
-                "</html>")
+        out = (
+            "<!DOCTYPE html>"
+            + f'<html lang="{escape(self.language)}" dir="{escape(self.direction)}">'
+            + "".join(tag.build(dynamic, **build_kwargs) for tag in self._tags)
+            + "</html>"
+        )
 
         if not dynamic and not self._cache:
             self._cache.append(out)
@@ -97,6 +105,7 @@ class Page(AbstractBase):
         """
 
         return any(tag.dynamic for tag in self._tags)
+
     @property
     def tags(self) -> list[AbstractTag]:
         """
@@ -105,6 +114,7 @@ class Page(AbstractBase):
         :return: The copy.
         """
         return self._tags.copy()
+
     @property
     def requirements(self) -> list[Cdn]:
         """

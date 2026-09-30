@@ -1,6 +1,6 @@
 import unittest
 
-from Autumn import new # type: ignore[import-not-found]
+from Autumn import new  # type: ignore[import-not-found]
 
 
 class Test(unittest.TestCase):
@@ -14,21 +14,27 @@ class Test(unittest.TestCase):
         self.name = base.name
 
     def test_page(self) -> None:
-        page = (self.page.require(self.tag.meta.Cdn("style", "https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.8/js/bootstrap.min.js"))
-                .new("my-page"))
+        page = self.page.require(
+            self.tag.meta.Cdn(
+                "style",
+                "https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.8/js/bootstrap.min.js",
+            )
+        ).new("my-page")
 
         # page.tag(self.tag.meta.Head())
 
-        self.assertMultiLineEqual(page.build(),
-                                  "<!DOCTYPE html>"
-                                  '<html lang="en" dir="auto">'
-                                  "<head>"
-                                  '<meta charset="UTF-8">'
-                                  '<meta name="viewport" content="width=device-width,initial-scale=1.0">'
-                                  "<title>my-page</title>"
-                                  '<link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.8/js/bootstrap.min.js" rel="stylesheet">'
-                                  '</head>'
-                                  '</html>')
+        self.assertMultiLineEqual(
+            page.build(),
+            "<!DOCTYPE html>"
+            '<html lang="en" dir="auto">'
+            "<head>"
+            '<meta charset="UTF-8">'
+            '<meta name="viewport" content="width=device-width,initial-scale=1.0">'
+            "<title>my-page</title>"
+            '<link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.8/js/bootstrap.min.js" rel="stylesheet">'
+            "</head>"
+            "</html>",
+        )
 
         class CustomPage(self.page.Page):  # type: ignore[misc,name-defined]
             ...
@@ -38,7 +44,7 @@ class Test(unittest.TestCase):
         page2.require(
             self.tag.meta.Cdn(
                 "style",
-                "https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.8/js/bootstrap.min.js"
+                "https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.8/js/bootstrap.min.js",
             )
         )
 
@@ -46,11 +52,9 @@ class Test(unittest.TestCase):
 
         self.page.register(CustomPage("page"))
 
-        self.assertMultiLineEqual(page.build(),
-                                  page2.build())
+        self.assertMultiLineEqual(page.build(), page2.build())
 
-        self.assertMultiLineEqual(page.build(),
-                                  self.page.build("my-page"))
+        self.assertMultiLineEqual(page.build(), self.page.build("my-page"))
 
     def test_sheet(self) -> None:
 
@@ -67,12 +71,17 @@ class Test(unittest.TestCase):
 
         sheet = self.style.Sheet(Style(), Style())
 
-        self.assertMultiLineEqual(sheet.build(),
-                                  ("div,smt#identifier.any"
-                                  ",.margin-and-padding,.cls"
-                                  ",#id1,#id2{margin: 1px;padding: 1px;}") * 2)
+        self.assertMultiLineEqual(
+            sheet.build(),
+            (
+                "div,smt#identifier.any"
+                ",.margin-and-padding,.cls"
+                ",#id1,#id2{margin: 1px;padding: 1px;}"
+            )
+            * 2,
+        )
 
-    def test_sheet_sorting(self)-> None:
+    def test_sheet_sorting(self) -> None:
 
         class Style(self.style.Style):
             def __init__(self, worth: int) -> None:
@@ -81,10 +90,13 @@ class Test(unittest.TestCase):
                 self.classes = ["testing"]
                 super().__init__()
 
-        sheet = self.style.Sheet(Style(1), Style(2), Style(4), Style(3), Style(6), Style(6))
+        sheet = self.style.Sheet(
+            Style(1), Style(2), Style(4), Style(3), Style(6), Style(6)
+        )
 
         sheet.sort()
 
-        self.assertMultiLineEqual(sheet.build(),
-                                  ".testing{worth: 1;}.testing{worth: 2;}.testing{worth: 3;}.testing{worth: 4;}.testing{worth: 6;}.testing{worth: 6;}")
-
+        self.assertMultiLineEqual(
+            sheet.build(),
+            ".testing{worth: 1;}.testing{worth: 2;}.testing{worth: 3;}.testing{worth: 4;}.testing{worth: 6;}.testing{worth: 6;}",
+        )

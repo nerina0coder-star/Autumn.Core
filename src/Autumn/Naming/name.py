@@ -7,19 +7,12 @@ from Autumn.Naming.class_ import Class
 from Autumn.Naming.identifier import Identifier
 from Autumn.abstract_base import AbstractBase
 
-
 class Name(AbstractBase):
     """
     Represents a CSS name.
     """
 
-    def __init__(self,
-                 name,
-                 /,
-                 id_="",
-                 classes=None,
-                 *,
-                 attributes = None):
+    def __init__(self, name, /, id_="", classes=None, *, attributes=None):
         """
         :param attributes: CSS/JS only
         """
@@ -36,10 +29,12 @@ class Name(AbstractBase):
 
         self._cache = []
 
-    def build(self, cache_if_possible = True, **kwargs):
+    def build(self, cache_if_possible=True, **kwargs):
 
         out = [self.name]
-        if self.name.count(" ") + self.name.count("\t") + self.name.count("\n") != 0 or any(i in self.name for i in "#.[]"):
+        if self.name.count(" ") + self.name.count("\t") + self.name.count(
+            "\n"
+        ) != 0 or any(i in self.name for i in "#.[]"):
             raise ValueError(f"Invalid CSS Tag Name: {self.name}")
 
         self.before_build(**kwargs)
@@ -61,12 +56,11 @@ class Name(AbstractBase):
             for k, v in self.attrs.items():
                 out.append(f'[{escape(k)}="{escape(v)}"]')
 
-        return ''.join(out)
+        return "".join(out)
 
     @staticmethod
     def from_tag(tag):
         return Name(tag.name, tag.identifier, copy.deepcopy(tag.classes))
-
     """    @staticmethod
     def from_string(string):
         hashtags = string.count("#")
@@ -112,4 +106,4 @@ class Name(AbstractBase):
             return Identifier(string[hashtag_index + 1:largest_after_hashtag_index])
 
         def get_classes() -> list[Class]:
-    """ # TODO - complete this
+    """  # TODO - complete this

@@ -6,10 +6,12 @@ from .generator import Generator
 
 # --- Special Function ---
 
-def MakeSelector(state = None,
-                 identifier = None,
-                 cls = None,
-                 selector = None,):
+def MakeSelector(
+    state=None,
+    identifier=None,
+    cls=None,
+    selector=None,
+):
     out = []
 
     if state is not None:

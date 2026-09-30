@@ -31,10 +31,9 @@ class Test(unittest.TestCase):
             def do_print(self):
                 self.true = True
 
-        self.assertEqual(Div().build(),
-                         "<div></div>")
+        self.assertEqual(Div().build(), "<div></div>")
 
         page.tag(Div())
-        page.tags[0].do_print() # type: ignore
-        self.assertTrue(page.tags[0].true) # type: ignore
+        page.tags[0].do_print()  # type: ignore
+        self.assertTrue(page.tags[0].true)  # type: ignore
         write(page.build(), self.prefix + "custom_div.html")

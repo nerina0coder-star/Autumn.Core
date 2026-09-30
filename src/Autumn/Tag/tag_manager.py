@@ -6,7 +6,6 @@ from .abstract_tag import AbstractTag
 from .comment import Comment
 from ..abstract_base import AbstractBase
 
-
 class TagManager(AbstractBase):
     """
     Manages the tags in Autumn independent of the class.
@@ -66,7 +65,9 @@ class TagManager(AbstractBase):
         :return: The aliased result.
         """
         if name in self.__dict__ or name in dir(self) or name in self._aliases:
-            raise ValueError(f"Alias or Real attribute with name {name} already exists in this instance.")
+            raise ValueError(
+                f"Alias or Real attribute with name {name} already exists in this instance."
+            )
         self._aliases[name] = result
         return result
 
@@ -92,7 +93,7 @@ class TagManager(AbstractBase):
         self.before_build(tag=tag)
         return tag.build(**kwargs)
 
-    def __getattr__(self, name): # Used for making aliases work.
+    def __getattr__(self, name):  # Used for making aliases work.
         if name in self._aliases:
             return self._aliases[name]
         raise AttributeError(f"Tag with name {name} does not exist")

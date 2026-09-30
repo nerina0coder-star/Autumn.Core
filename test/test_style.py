@@ -16,10 +16,11 @@ class Test(unittest.TestCase):
 
         class Style(self.style.Style):
             def __init__(self):
-                self.name = ["div.cls#id",
-                             name.Name("p"),
-                             name.Name("p", "identifier", ["cls"]),
-                             ]
+                self.name = [
+                    "div.cls#id",
+                    name.Name("p"),
+                    name.Name("p", "identifier", ["cls"]),
+                ]
 
                 super().__init__()
 

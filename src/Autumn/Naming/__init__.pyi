@@ -8,22 +8,24 @@ from .name import Name as Name
 from .generator import Generator as Generator
 
 def MakeSelector(
-        state: Name | list[Name] | None = None,
-        identifier: Identifier | list[Identifier] | None = None,
-        cls: Class | list[Class] | None = None,
-        selector: AttributeSelector | list[AttributeSelector] | None = None,
+    state: Name | list[Name] | None = None,
+    identifier: Identifier | list[Identifier] | None = None,
+    cls: Class | list[Class] | None = None,
+    selector: AttributeSelector | list[AttributeSelector] | None = None,
 ) -> str: ...
 
 class Naming:
-    MakeSelector: ClassVar[Callable[
-        [
-            Name | list[Name] | None,
-            Identifier | list[Identifier] | None,
-            Class | list[Class] | None,
-            AttributeSelector | list[AttributeSelector] | None,
-        ],
-        str
-    ]]
+    MakeSelector: ClassVar[
+        Callable[
+            [
+                Name | list[Name] | None,
+                Identifier | list[Identifier] | None,
+                Class | list[Class] | None,
+                AttributeSelector | list[AttributeSelector] | None,
+            ],
+            str,
+        ]
+    ]
 
     Name: ClassVar[type[Name]]
     Identifier: ClassVar[type[Identifier]]

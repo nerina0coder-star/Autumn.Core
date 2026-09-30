@@ -6,7 +6,6 @@ from markupsafe import Markup
 
 from Autumn.abstract_base import AbstractBase
 
-
 class StyleHolder(AbstractBase, abc.ABC):
 
     _lock: threading.RLock
@@ -18,5 +17,4 @@ class StyleHolder(AbstractBase, abc.ABC):
     dynamic: bool
 
     def __init__(self) -> None: ...
-
     def build(self, **kwargs: Any) -> str: ...
