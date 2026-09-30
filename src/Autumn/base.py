@@ -15,24 +15,19 @@ from .abstract_base import AbstractBase
 from .decorators import Decorators
 from .Naming import Naming
 
-
 class Dummy:
     def __getattr__(self, _):
         raise ContextError()
-
 
 dummy = Dummy()
 
 _base = ContextVar("base", default=None)
 
-
 def _set_base(base):
     _base.set(base)
 
-
 def _remove_base():
     _base.set(None)
-
 
 def _current_base():
     instance = _base.get()
@@ -40,12 +35,10 @@ def _current_base():
         return dummy
     return instance
 
-
 current_base = LocalProxy(_current_base)  # type: ignore
 """
 The base currently used.
 """
-
 
 class Base:
     """
@@ -98,7 +91,6 @@ class Base:
             self.wrapped = value
             value.__autumn_base__ = self
 
-
     @extensions.deleter
     def extensions(self):
         """
@@ -146,22 +138,22 @@ class Base:
         :param args: The arguments to give to the function.
         :param kwargs: The keyword arguments to give to the function.
         :return: The result of the read operation.
-        """ # TODO: Remove this completely, deepcopy is already enough.
+        """  # TODO: Remove this completely, deepcopy is already enough.
 
         attribute = "_" + attribute
 
         with self._lock:
-            if not function in \
-                ["get", "index", "copy",
-                 "count", "range"]:
-                raise RuntimeError(f"Unallowed function: {function}, only get, index, copy, and range(slicing) are allowed")
+            if not function in ["get", "index", "copy", "count", "range"]:
+                raise RuntimeError(
+                    f"Unallowed function: {function}, only get, index, copy, and range(slicing) are allowed"
+                )
 
             if function == "get" and len(args) == 1:
                 return getattr(self, attribute)[args[0]]
             if function == "range" and len(args) == 2:
-                return getattr(self, attribute)[args[0]:args[1]]
+                return getattr(self, attribute)[args[0] : args[1]]
             if function == "range" and len(args) == 3:
-                return getattr(self,attribute)[args[0]:args[1]:args[2]]
+                return getattr(self, attribute)[args[0] : args[1] : args[2]]
 
             return getattr(getattr(self, attribute), function)(*args, **kwargs)
 
@@ -174,21 +166,21 @@ class Base:
         :param args: The arguments to give to the function.
         :param kwargs: The keyword arguments to give to the function.
         :return: The result of the called function.
-        """ # TODO: Remove and replace this with something better.
+        """  # TODO: Remove and replace this with something better.
 
         attribute = "_" + attribute
 
         with self._lock:
-            if not function in \
-                ["pop", "remove", "extend"]:
-                raise RuntimeError(f"Unallowed function: {function}, only pop, remove, extend, and range are allowed")
+            if not function in ["pop", "remove", "extend"]:
+                raise RuntimeError(
+                    f"Unallowed function: {function}, only pop, remove, extend, and range are allowed"
+                )
 
             if function == "extend":
                 for i in args:
                     if not getattr(type(i), "_wrapped_with_autumn_base_ctrl", False):
                         self.ctrl(type(i))
             return getattr(getattr(self, attribute), function)(*args, **kwargs)
-
 
     def ctrl(self, cls=None):
         """
@@ -227,17 +219,24 @@ class Base:
             try:
                 last_self(self_, *args, **kwargs)
             except Exception as e:
-                base._notify_extensions_of_exception(instance=self_, exception=e, args=args, kwargs=kwargs)
+                base._notify_extensions_of_exception(
+                    instance=self_, exception=e, args=args, kwargs=kwargs
+                )
                 raise
-
         init.__signature__ = signature(last_self)
 
         for i, j in cls.__dict__.items():
 
-            if i in ["__new__", "__init__",
-                     "__getattribute__", "__setattr__",
-                     "__dict__", "__doc__", "__module__",
-                     "__weakref__"]:
+            if i in [
+                "__new__",
+                "__init__",
+                "__getattribute__",
+                "__setattr__",
+                "__dict__",
+                "__doc__",
+                "__module__",
+                "__weakref__",
+            ]:
                 continue
 
             if hasattr(j, "__allow_unsafe__") and j.__allow_unsafe__:
@@ -258,9 +257,10 @@ class Base:
                         base: Base = type(self_).__autumn_base__
                     else:
                         base: Base = self_.__autumn_base__
-                    base._notify_extensions_of_exception(instance=self_, exception=e, args=args, kwargs=kwargs)
+                    base._notify_extensions_of_exception(
+                        instance=self_, exception=e, args=args, kwargs=kwargs
+                    )
                     raise
-
             out.__signature__ = signature(j)
 
             if isinstance(j, classmethod):
@@ -378,11 +378,15 @@ class Base:
                 try:
                     if extension is kwargs.get("instance", None):
                         continue
-                    if not hasattr(extension, "_at_exception") or not callable(extension._at_exception):
+                    if not hasattr(extension, "_at_exception") or not callable(
+                        extension._at_exception
+                    ):
                         continue
                     extension._at_exception(**kwargs)
                 except Exception as e:
-                    warn(f"""Extension {extension.__class__.__name__}'s exception hook failed with "{e}", skipping.""")
+                    warn(
+                        f"""Extension {extension.__class__.__name__}'s exception hook failed with "{e}", skipping."""
+                    )
         finally:
             if self._lock.locked():
                 self._lock.release()
@@ -396,7 +400,7 @@ class Base:
 
         memo[id(self)] = new
         for k, v in self.__dict__.items():
-            if k == '_lock':
+            if k == "_lock":
                 setattr(new, k, threading.Lock())
                 continue
 

@@ -6,7 +6,6 @@ from functools import wraps
 from inspect import signature, isroutine
 from typing import Any
 
-
 class AbstractBase(abc.ABC):
     """
     The base of most, if not all, of classes in Autumn.
@@ -17,15 +16,17 @@ class AbstractBase(abc.ABC):
         """
         (Internal handler) Injects no new.
         """
-        if cls.__dict__.get("__no_new__", False) and not getattr(cls.__new__, "__autumn_no_new_handled", False):
+        if cls.__dict__.get("__no_new__", False) and not getattr(
+            cls.__new__, "__autumn_no_new_handled", False
+        ):
 
             def new(cls2: type, *__: Any, **___: Any) -> Any:
                 if cls2 is cls:
-                    raise RuntimeError(f"Cannot create class {cls.__name__}, class declared "
-                                       "No New.")
+                    raise RuntimeError(
+                        f"Cannot create class {cls.__name__}, class declared " "No New."
+                    )
                 # noinspection PySuperArguments
                 return super(cls, cls2).__new__(cls2)  # type: ignore[misc]
-
             setattr(new, "__autumn_no_new_handled", True)
             cls.__new__ = new  # type: ignore[method-assign,assignment]
 
@@ -63,25 +64,31 @@ class AbstractBase(abc.ABC):
                 "__qualname__",
                 "__module__",
                 "__annotations__",
-                "__type_params__"
+                "__type_params__",
             ]
 
             if isinstance(v, classmethod):
                 @wraps(v, assigned=items)
-                def wrapped(cls: AbstractBase, *args: Any, _func=v.__func__, **kws: Any) -> Any:
+                def wrapped(
+                    cls: AbstractBase, *args: Any, _func=v.__func__, **kws: Any
+                ) -> Any:
                     if hasattr(cls, "_lock"):
                         with cls._lock:
                             return _func(cls, *args, **kws)
                     return _func(cls, *args, **kws)
             else:
                 @wraps(v, assigned=items)
-                def wrapped(self: AbstractBase, *args: Any, _func: Callable[..., Any] = v, **kws: Any) -> Any:
+                def wrapped(
+                    self: AbstractBase,
+                    *args: Any,
+                    _func: Callable[..., Any] = v,
+                    **kws: Any,
+                ) -> Any:
 
                     if hasattr(self, "_lock"):
                         with self._lock:
                             return _func(self, *args, **kws)
                     return _func(self, *args, **kws)
-
             if isinstance(v, classmethod):
                 wrapped.__signature__ = signature(v.__func__)
             else:
@@ -112,23 +119,25 @@ class AbstractBase(abc.ABC):
             if out.__dict__.get("__autumn_handled_autoinit__", False):
                 return lambda *x, **y: ...
             return out
-
         if cls.__dict__.get("__children_autoinit__", False):
             @wraps(getcls("__init_subclass__"))
-            def __init_subclass__(cls2: type[AbstractBase],
-                                  *_args: Any,
-                                  _func: Callable[..., Any]=getcls("__init_subclass__"),
-                                  **kw: Any) -> None:
+            def __init_subclass__(
+                cls2: type[AbstractBase],
+                *_args: Any,
+                _func: Callable[..., Any] = getcls("__init_subclass__"),
+                **kw: Any,
+            ) -> None:
                 if cls2.__dict__.get("__autocall_init__", True):
                     setattr(cls2, "__autocall_init__", True)
 
-                if "__calling_super__" in cls2.__dict__: getattr(cls2, "__calling_super__").append(cls)
-                else: setattr(cls2, "__calling_super__", [cls])
+                if "__calling_super__" in cls2.__dict__:
+                    getattr(cls2, "__calling_super__").append(cls)
+                else:
+                    setattr(cls2, "__calling_super__", [cls])
 
                 _func(cls2, **kw)  # type: ignore[unused-ignore]
 
                 super(cls, cls2).__init_subclass__(**kw)  # type: ignore[unused-ignore]
-
             setattr(__init_subclass__, "__autumn_handled_autoinit__", True)
             cls.__init_subclass__ = classmethod(__init_subclass__)  # type: ignore[assignment,arg-type]
 
@@ -138,15 +147,17 @@ class AbstractBase(abc.ABC):
         if hasattr(cls, "__getattr__"):
             cls.__getattr__ = cls.__getattr__
 
-
     @staticmethod
-    def __handle_autoinit_init__(cls: type["AbstractBase"], /, *, init: Callable[..., Any]) -> None:
+    def __handle_autoinit_init__(
+        cls: type["AbstractBase"], /, *, init: Callable[..., Any]
+    ) -> None:
 
         if getattr(init, "__no_autoinit__", False):
             return
 
-        def __init__(self: AbstractBase, *args: Any, _func: Callable[..., Any] = init,
-                     **kws: Any) -> Any:
+        def __init__(
+            self: AbstractBase, *args: Any, _func: Callable[..., Any] = init, **kws: Any
+        ) -> Any:
 
             _func(self, *args, **kws)  # type: ignore[unused-ignore]
 
@@ -158,15 +169,19 @@ class AbstractBase(abc.ABC):
 
             params = lambda *a, **kw: (args, kws)
 
-            if "__params_to_parent__" in self.__dict__ or "__params_to_parent__" in type(self).__dict__:
+            if (
+                "__params_to_parent__" in self.__dict__
+                or "__params_to_parent__" in type(self).__dict__
+            ):
                 params = getattr(self, "__params_to_parent__")
 
             calling_super = getattr(self, "__calling_super__").copy()
 
             for i in calling_super:
 
-                called: tuple[tuple[Any, ...], dict[Any, Any]] = params(i, *args,
-                                                                        **kws)  # type: ignore[no-untyped-call]
+                called: tuple[tuple[Any, ...], dict[Any, Any]] = params(
+                    i, *args, **kws
+                )  # type: ignore[no-untyped-call]
 
                 arguments: tuple[Any, ...] = called[0]
                 keyword_arguments: dict[Any, Any] = called[1]
@@ -178,7 +193,6 @@ class AbstractBase(abc.ABC):
 
             if top:
                 delattr(self, "__autumn_inited_list")
-
         # TODO: Replace these three with setattr
         __init__._wrapped_ = cls.__init__  # type: ignore[attr-defined]
         __init__.__autumn_handled_autoinit__ = True  # type: ignore[attr-defined]
@@ -241,14 +255,16 @@ class AbstractBase(abc.ABC):
         memo[id(self)] = new
 
         for k, v in self.__dict__.items():
-            if k == '_lock':
+            if k == "_lock":
                 setattr(new, k, threading.Lock())
                 continue
 
             try:
                 setattr(new, k, copy.deepcopy(v, memo))
             except TypeError as e:
-                raise TypeError(f"Object {self.__class__.__name__}.{k} raised deepcopy error") from e
+                raise TypeError(
+                    f"Object {self.__class__.__name__}.{k} raised deepcopy error"
+                ) from e
         return new
 
     def copy(self, item: str) -> Any | None:

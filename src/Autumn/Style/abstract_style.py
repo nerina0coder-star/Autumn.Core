@@ -39,22 +39,20 @@ class AbstractStyle(AbstractBase):
             self.worth = 0
 
         if not isinstance(self.name, list):
-            self.name = [self.name] # type: Ignore
+            self.name = [self.name]  # type: Ignore
 
         self._lock = threading.RLock()
 
         # Please note that this is because user's code is unpredictable, therefore using RLock's flexibility
         # is REQUIRED. Even I consider RLock a code smell, but in this case, it cannot be helped.
 
-
-
-    def build(self, cache_if_possible = True, **kwargs):
+    def build(self, cache_if_possible=True, **kwargs):
         """
         Builds the style.
         :param cache_if_possible: If true, the style is cached if this style is not dynamic.
         :param kwargs: The kwargs to pass to all sub-style holders.
         :return:
-        """ # TODO add at rules support
+        """  # TODO add at rules support
         if not self.dynamic and self._cache:
             return self._cache[-1]
 
@@ -69,7 +67,9 @@ class AbstractStyle(AbstractBase):
 
         if self.name:
             for name in self.name[0:-1]:
-                out.extend([name.build(**kwargs) if not isinstance(name, str) else name, ","])
+                out.extend(
+                    [name.build(**kwargs) if not isinstance(name, str) else name, ","]
+                )
             out.append(self.name[-1].build(**kwargs))
             name_ran = True
         if self.classes:
@@ -100,8 +100,9 @@ class AbstractStyle(AbstractBase):
 
         if self.styles:
             for style in self.styles:
-                out.append(style.build(**kwargs) if isinstance(style, StyleHolder) else style)
-
+                out.append(
+                    style.build(**kwargs) if isinstance(style, StyleHolder) else style
+                )
 
         out.append("}")
 
@@ -121,4 +122,3 @@ class AbstractStyle(AbstractBase):
 
     def __lt__(self, other):
         return int(self.worth) < int(other.worth)
-

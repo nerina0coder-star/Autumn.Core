@@ -6,7 +6,6 @@ from .abstract_style import AbstractStyle
 from .sheet import Sheet
 from .Styles import StyleHolder
 
-
 class StyleManager(AbstractBase):
 
     Style: type[AbstractStyle]
@@ -16,9 +15,6 @@ class StyleManager(AbstractBase):
     _lock: threading.Lock
 
     def __init__(self) -> None: ...
-
     def register(self, name: str, template: AbstractStyle) -> None: ...
-
     def register_all(self, **data: AbstractStyle) -> StyleManager: ...
-
-    def build(self, template_name: str, **build_kwargs: Any) -> str: ... # type: ignore
+    def build(self, template_name: str, **build_kwargs: Any) -> str: ...  # type: ignore

@@ -8,7 +8,6 @@ from .abstract_tag import AbstractTag
 from .Enums import Enums
 from ..abstract_base import AbstractBase
 
-
 class TagManager(AbstractBase):
     comment: type[Comment]
     meta: type[Meta]
@@ -21,15 +20,11 @@ class TagManager(AbstractBase):
     _lock: threading.Lock
 
     def __init__(self) -> None: ...
-
     def tag(self, tag: type[AbstractTag]) -> TagManager: ...
-
     def find(self, name: str) -> AbstractTag: ...
-
     def alias(self, name: str, result: type[AbstractTag]) -> type[AbstractTag]: ...
-
     def merge(self, other: TagManager) -> TagManager: ...
-
     def build(self, *, tag: AbstractTag, **kwargs: Any) -> str: ...  # type: ignore[override]
-
-    def __getattr__(self, item: str) -> Callable[..., AbstractTag] | type[AbstractTag]: ...
+    def __getattr__(
+        self, item: str
+    ) -> Callable[..., AbstractTag] | type[AbstractTag]: ...

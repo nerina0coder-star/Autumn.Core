@@ -3,14 +3,12 @@ from Autumn.Tag.abstract_tag import AbstractTag
 from .link import Link
 from .script import Script
 
-
 class Cdn(AbstractTag):
     """
     Represents a CDN that links the assets from the CDN to the document.
     """
 
-    def __init__(self, cdn_type, link,
-                 /, *, script_type = None, **css_kwargs):
+    def __init__(self, cdn_type, link, /, *, script_type=None, **css_kwargs):
         """
         Initializes a new instance of the Cdn tag.
 
@@ -30,4 +28,8 @@ class Cdn(AbstractTag):
         AbstractTag.__init__(self)
 
     def before_build(self, **kwargs):
-        return Link(self.link, LinkType.STYLESHEET, **self.ck).build(**kwargs) if self.type == "style" else Script(self.link, self.script_type).build(**kwargs)
+        return (
+            Link(self.link, LinkType.STYLESHEET, **self.ck).build(**kwargs)
+            if self.type == "style"
+            else Script(self.link, self.script_type).build(**kwargs)
+        )

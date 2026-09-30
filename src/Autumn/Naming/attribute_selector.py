@@ -4,9 +4,7 @@ from markupsafe import escape
 
 from Autumn.abstract_base import AbstractBase
 
-
 class AttributeSelector(AbstractBase):
-
     def __init__(self, attr, value):
         self._attr = attr
         self._value = value

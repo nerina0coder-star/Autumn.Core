@@ -9,7 +9,6 @@ from Autumn.Naming.identifier import Identifier
 from Autumn.abstract_base import AbstractBase
 from Autumn.decorators import no_lock
 
-
 class AbstractTag(AbstractBase):
     type _comparison = AbstractTag | int | float
     __hash__ = object.__hash__
@@ -33,7 +32,10 @@ class AbstractTag(AbstractBase):
 
         if not (hasattr(self, "tags") and isinstance(self.tags, list)):
             self.tags = []
-        if not (hasattr(self, "identifier") and isinstance(self.identifier, (str, Identifier))):
+        if not (
+            hasattr(self, "identifier")
+            and isinstance(self.identifier, (str, Identifier))
+        ):
             self.identifier = None
         if not (hasattr(self, "classes") and isinstance(self.classes, list)):
             self.classes = []
@@ -50,14 +52,12 @@ class AbstractTag(AbstractBase):
             self.closable = False
 
         if not (
-                hasattr(self, "preferred_parent") and
-                self.preferred_parent is not None and  # type: ignore
-                isinstance(self.preferred_parent, AbstractTag
-                           )
+            hasattr(self, "preferred_parent")
+            and self.preferred_parent is not None  # type: ignore
+            and isinstance(self.preferred_parent, AbstractTag)
         ):
             def default():
                 return []
-
             self.preferred_parent = default
 
         self.dynamic = getattr(self, "dynamic", False) or any(  # type: ignore[annotation-unchecked,unused-ignore]
@@ -117,7 +117,7 @@ class AbstractTag(AbstractBase):
                 except RecursionError:
                     break
 
-    def build(self, cache_if_possible = True, /, **kwargs):
+    def build(self, cache_if_possible=True, /, **kwargs):
         """
         Builds the tag and all sub tags.
 
@@ -127,22 +127,26 @@ class AbstractTag(AbstractBase):
         """
 
         if kwargs.get("recursion", 0) > 512:
-            raise RecursionError("Recursion depth exceed(512). Please lower the nesting.")
+            raise RecursionError(
+                "Recursion depth exceed(512). Please lower the nesting."
+            )
 
         if not self.dynamic and self._cache:
             return self._cache[-1]
 
-        if not (
-            kwargs.get("prod", False) or kwargs.get("production", False)
-        ):
+        if not (kwargs.get("prod", False) or kwargs.get("production", False)):
             err = []
             if any(i.startswith("on") for i in self.attributes.keys()):
-                err.append(f"Use of on attribute in class {self.__class__.__name__}. Please don't use on* attributes, instead, "
-                     f"use javascript's addEventListener, as it can introduce XSS security issues.")
+                err.append(
+                    f"Use of on attribute in class {self.__class__.__name__}. Please don't use on* attributes, instead, "
+                    f"use javascript's addEventListener, as it can introduce XSS security issues."
+                )
 
             if "style" in self.attributes:
-                err.append(f"Use of style attribute in class {self.__class__.__name__}. Please use a CSS stylesheet, as inline "
-                     f"style attributes are hard to find and manage in a huge DOM, and can introduce CSS Injection issues.")
+                err.append(
+                    f"Use of style attribute in class {self.__class__.__name__}. Please use a CSS stylesheet, as inline "
+                    f"style attributes are hard to find and manage in a huge DOM, and can introduce CSS Injection issues."
+                )
 
             if err:
                 e = "".join(f"{e}\n" for e in err)
@@ -164,7 +168,6 @@ class AbstractTag(AbstractBase):
         classes = self.classes.copy()
         identifier = str(self.identifier) if self.identifier is not None else None
 
-
         all_ = [f"<{name}"]
         if classes:
             all_.append(f' class="{"".join(f"{cls} " for cls in self.classes)}"')
@@ -176,7 +179,7 @@ class AbstractTag(AbstractBase):
                 if val == True:
                     # Do not simplify. We want to see if the val is LITERALLY True.
                     # But if we do "if val", it will be the same for a string, a list, etc.
-                    all_.append(f' {attr}')
+                    all_.append(f" {attr}")
                     continue
                 all_.append(f' {attr}="{escape(str(val))}"')
 
@@ -185,8 +188,10 @@ class AbstractTag(AbstractBase):
         if closable:
             if tags:
                 for tag in tags:
-                    all_.append(f"{tag.build(dynamic if cache_if_possible else False, recursion=kwargs.get("recursion", 0) + 1, **kwargs)
-                    if isinstance(tag, AbstractTag) else tag}")
+                    all_.append(
+                        f"{tag.build(dynamic if cache_if_possible else False, recursion=kwargs.get("recursion", 0) + 1, **kwargs)
+                    if isinstance(tag, AbstractTag) else tag}"
+                    )
             all_.append(f"</{name}>")
 
         out = "".join(all_)
@@ -302,16 +307,12 @@ class AbstractTag(AbstractBase):
         else:
             other = copy.deepcopy(other)
 
-
         def do(tag):
             allowed = not any(isinstance(tag, j) for j in other)
             if not allowed:
                 other.remove(type(tag))
             return allowed
-
-        new = list(reversed(
-            list(filter(do, reversed(self.tags)))
-        ))
+        new = list(reversed(list(filter(do, reversed(self.tags)))))
         self.tags = new
 
         return other
@@ -364,8 +365,14 @@ class AbstractTag(AbstractBase):
         :param item: a class for instance check or an instance for literal check.
         :return: True or False.
         """
-        if not (isinstance(item, AbstractTag) or issubclass(item, AbstractTag) or isinstance(item, str)):
-            raise ValueError(f"expected (type of or instance of) AbstractTag, or str, but given {item}")
+        if not (
+            isinstance(item, AbstractTag)
+            or issubclass(item, AbstractTag)
+            or isinstance(item, str)
+        ):
+            raise ValueError(
+                f"expected (type of or instance of) AbstractTag, or str, but given {item}"
+            )
 
         if isclass(item):
             if issubclass(item, AbstractTag):
@@ -403,11 +410,14 @@ class AbstractTag(AbstractBase):
         out = None
 
         if isinstance(other, AbstractTag):
-            out = self._resolve_parent([self, other] if not self._reverse_addition else [other, self])
+            out = self._resolve_parent(
+                [self, other] if not self._reverse_addition else [other, self]
+            )
         elif isinstance(other, list):
-            out = self._resolve_parent([self, *other] if not self._reverse_addition else [*other, self])
+            out = self._resolve_parent(
+                [self, *other] if not self._reverse_addition else [*other, self]
+            )
 
         self._reverse_addition = False
 
         return out
-

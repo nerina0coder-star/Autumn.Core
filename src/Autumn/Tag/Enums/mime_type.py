@@ -1,12 +1,12 @@
 import enum
 from pathlib import Path
 
-
 class MimeType(enum.Enum):
     """
     A class holding many mime types used in real world cases.
     Note that for extensions that start with a number, put a trailing _ to find them.
     """
+
     HTML = "Text/html"
     HTM = HTML
     SHTML = HTML
@@ -113,7 +113,7 @@ class MimeType(enum.Enum):
     _3GP = _3GPP
     TS = "video/mp2t"
     MP4 = "video/mp4"
-    MPEG ="video/mpeg"
+    MPEG = "video/mpeg"
     MPG = MPEG
     OGV = "video/ogg"
     MOV = "video/quicktime"
@@ -134,7 +134,7 @@ class MimeType(enum.Enum):
         :param url:
         :return:
         """
-        if "." in url[max(url.rfind("/"), url.rfind("\\")) + 1:]:
+        if "." in url[max(url.rfind("/"), url.rfind("\\")) + 1 :]:
             extension = Path(url).suffix
             if extension[0].isdigit():
                 extension = "_" + extension

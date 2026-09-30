@@ -2,7 +2,6 @@ import enum
 
 from Autumn.Tag.Enums import MimeType
 
-
 class ScriptType(enum.Enum):
     """
     Different types of scripts.

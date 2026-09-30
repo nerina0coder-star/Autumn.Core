@@ -4,7 +4,6 @@ from markupsafe import escape, Markup
 
 from Autumn.abstract_base import AbstractBase
 
-
 class StyleHolder(AbstractBase):
     """
     Holds all styles.
@@ -19,7 +18,7 @@ class StyleHolder(AbstractBase):
         # Please note that this is because user's code is unpredictable, therefore using RLock's flexibility
         # is REQUIRED. Even I consider RLock a code smell, but in this case, it cannot be helped.
 
-        if not (hasattr(self, 'name') and isinstance(self.name, str)):
+        if not (hasattr(self, "name") and isinstance(self.name, str)):
             self.name = ""
         if not (hasattr(self, "value") and isinstance(self.value, str)):
             self.value = ""
@@ -42,9 +41,17 @@ class StyleHolder(AbstractBase):
             return result
 
         value = self.value
-        if self.value.startswith('"') and self.value.endswith('"') \
-                or self.value.startswith("'") and self.value.endswith("'"):
-            value = Markup(self.value[0]) + escape(self.value[1:-2]) + Markup(self.value[-1])
+        if (
+            self.value.startswith('"')
+            and self.value.endswith('"')
+            or self.value.startswith("'")
+            and self.value.endswith("'")
+        ):
+            value = (
+                Markup(self.value[0])
+                + escape(self.value[1:-2])
+                + Markup(self.value[-1])
+            )
 
         out = f"{self.name}:{escape(value)}{f"!important" if self.important else ""};"
 

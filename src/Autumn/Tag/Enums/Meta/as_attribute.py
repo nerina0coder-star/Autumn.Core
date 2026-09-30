@@ -1,6 +1,5 @@
 import enum
 
-
 class AsAttribute(enum.Enum):
     """
     A class that represents what you can put in an as attribute of a link.
